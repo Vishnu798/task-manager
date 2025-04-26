@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../controllers/task_controller copy.dart';
+import '../../controllers/task_controller.dart';
 import '../../models/task.dart';
 import '../../controllers/task_controller.dart';
-import '../../utils/app_theme.dart';
 
 class TaskItem extends StatelessWidget {
   final Task task;
@@ -18,6 +17,8 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Hero(
       tag: 'task-${task.id}-${task.createdAt.millisecondsSinceEpoch}',
       child: Padding(
@@ -42,7 +43,7 @@ class TaskItem extends StatelessWidget {
                 scale: 1.2,
                 child: Checkbox(
                   value: task.isCompleted,
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -59,7 +60,9 @@ class TaskItem extends StatelessWidget {
                   decoration: task.isCompleted 
                     ? TextDecoration.lineThrough 
                     : TextDecoration.none,
-                  color: task.isCompleted ? Colors.grey : Colors.black87,
+                  color: task.isCompleted 
+                    ? (isDark ? Colors.grey.shade500 : Colors.grey) 
+                    : (isDark ? Colors.grey.shade200 : Colors.black87),
                 ),
               ),
               trailing: IconButton(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/task_controller copy.dart';
 import '../../controllers/task_controller.dart';
+import '../../controllers/task_controller.dart';
+import '../../controllers/theme_controller.dart';
 import '../widgets/task_stats.dart';
 import '../widgets/filter_section.dart';
 import '../widgets/task_item.dart';
@@ -10,14 +11,27 @@ import '../../utils/app_theme.dart';
 
 class TaskListScreen extends StatelessWidget {
   final TaskController taskController = Get.put(TaskController());
+  final ThemeController themeController = Get.find<ThemeController>();
   final TextEditingController textController = TextEditingController();
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text('My Tasks'),
+        actions: [
+          Obx(() => IconButton(
+            icon: Icon(
+              themeController.isDarkMode.value 
+                ? Icons.light_mode 
+                : Icons.dark_mode,
+            ),
+            onPressed: () {
+              themeController.toggleTheme();
+            },
+          )),
+        ],
       ),
       body: Column(
         children: [
@@ -46,7 +60,7 @@ class TaskListScreen extends StatelessWidget {
               controller: textController,
               decoration: InputDecoration(
                 hintText: 'Enter task title',
-                prefixIcon: Icon(Icons.task, color: AppTheme.primaryColor),
+                prefixIcon: Icon(Icons.task, color: Get.theme.primaryColor),
               ),
             ),
           ),

@@ -5,6 +5,8 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -12,7 +14,7 @@ class EmptyState extends StatelessWidget {
           Icon(
             Icons.check_circle_outline,
             size: 80,
-            color: Colors.grey.shade400,
+            color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
           ),
           SizedBox(height: 16),
           Text(
@@ -20,14 +22,14 @@ class EmptyState extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.grey.shade600,
+              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
             ),
           ),
           SizedBox(height: 8),
           Text(
             'Add a new task using the button below',
             style: TextStyle(
-              color: Colors.grey.shade500,
+              color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
             ),
           ),
         ],

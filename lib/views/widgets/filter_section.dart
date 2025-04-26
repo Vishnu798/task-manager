@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/task_controller copy.dart';
 import '../../controllers/task_controller.dart';
-import '../../utils/app_theme.dart';
+import '../../controllers/task_controller.dart';
 
 class FilterSection extends StatelessWidget {
   final TaskController taskController;
@@ -11,15 +10,17 @@ class FilterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? Color(0xFF2A2A2A) : Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha:isDark ? 0.2 : 0.05),
               blurRadius: 5,
               offset: Offset(0, 2),
             ),
@@ -27,16 +28,18 @@ class FilterSection extends StatelessWidget {
         ),
         child: Obx(() => Row(
           children: [
-            _buildFilterButton('All'),
-            _buildFilterButton('Active'),
-            _buildFilterButton('Completed'),
+            _buildFilterButton('All', context),
+            _buildFilterButton('Active', context),
+            _buildFilterButton('Completed', context),
           ],
         )),
       ),
     );
   }
   
-  Widget _buildFilterButton(String filterName) {
+  Widget _buildFilterButton(String filterName, BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Expanded(
       child: GestureDetector(
         onTap: () => taskController.changeFilter(filterName),
@@ -44,7 +47,7 @@ class FilterSection extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: taskController.filter.value == filterName
-                ? AppTheme.primaryColor
+                ? Theme.of(context).primaryColor
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
@@ -54,7 +57,7 @@ class FilterSection extends StatelessWidget {
             style: TextStyle(
               color: taskController.filter.value == filterName
                   ? Colors.white
-                  : Colors.grey.shade700,
+                  : isDark ? Colors.grey.shade300 : Colors.grey.shade700,
               fontWeight: FontWeight.w600,
             ),
           ),
